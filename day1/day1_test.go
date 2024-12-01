@@ -101,7 +101,7 @@ func day1Part2(path string) int {
 	}
 
 	leftList := []int{}
-	rightListMap := map[int]int{}
+	numToCountsMap := map[int]int{}
 
 	for _, line := range file {
 		parts := strings.Fields(line)
@@ -115,18 +115,17 @@ func day1Part2(path string) int {
 
 		leftList = append(leftList, num1)
 
-		value, ok := rightListMap[num2]
+		value, ok := numToCountsMap[num2]
 		if ok {
-			rightListMap[num2] = value + 1
+			numToCountsMap[num2] = value + 1
 		} else {
-			rightListMap[num2] = 1
+			numToCountsMap[num2] = 1
 		}
 	}
 
 	var result int
 	for _, int := range leftList {
-		value, ok := rightListMap[int]
-		if ok {
+		if value, ok := numToCountsMap[int]; ok {
 			result += value * int
 		}
 	}
