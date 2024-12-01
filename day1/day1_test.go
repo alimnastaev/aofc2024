@@ -4,7 +4,7 @@ package day1_test
 
 import (
 	"fmt"
-	"sort"
+	"slices"
 	"strconv"
 	"strings"
 	"testing"
@@ -36,8 +36,7 @@ func Test_day1(t *testing.T) {
 func day1Part1(path string) int {
 	file, err := utils.ReadFile(path)
 	if err != nil {
-		fmt.Println("Error reading file:", err)
-		return -1
+		panic(fmt.Sprintf("Error reading file: %v", err))
 	}
 
 	leftList := []int{}
@@ -49,16 +48,15 @@ func day1Part1(path string) int {
 		n1, err1 := strconv.Atoi(parts[0])
 		n2, err2 := strconv.Atoi(parts[1])
 		if err1 != nil || err2 != nil {
-			fmt.Println("Error converting to integers:", err1, err2)
-			return -1
+			panic(fmt.Sprintf("Error converting to integers: %v, %v", err1, err2))
 		}
 
 		leftList = append(leftList, n1)
 		rightList = append(rightList, n2)
 	}
 
-	sort.Ints(leftList)
-	sort.Ints(rightList)
+	slices.Sort(leftList)
+	slices.Sort(rightList)
 
 	var result int
 	for i, int := range leftList {
@@ -71,8 +69,7 @@ func day1Part1(path string) int {
 func day1Part2(path string) int {
 	file, err := utils.ReadFile(path)
 	if err != nil {
-		fmt.Println("Error reading file:", err)
-		return -1
+		panic(fmt.Sprintf("Error reading file: %v", err))
 	}
 
 	leftList := []int{}
@@ -84,8 +81,7 @@ func day1Part2(path string) int {
 		num1, err1 := strconv.Atoi(parts[0])
 		num2, err2 := strconv.Atoi(parts[1])
 		if err1 != nil || err2 != nil {
-			fmt.Println("Error converting to integers:", err1, err2)
-			return -1
+			panic(fmt.Sprintf("Error converting to integers: %v, %v", err1, err2))
 		}
 
 		leftList = append(leftList, num1)
