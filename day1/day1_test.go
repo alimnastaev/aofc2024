@@ -86,12 +86,7 @@ func day1Part2(path string) int {
 
 		leftList = append(leftList, num1)
 
-		value, ok := numToCountsMap[num2]
-		if ok {
-			numToCountsMap[num2] = value + 1
-		} else {
-			numToCountsMap[num2] = 1
-		}
+		numToCountsMap[num2]++
 	}
 
 	var result int
