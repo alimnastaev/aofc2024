@@ -13,42 +13,17 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func Test_Day1(t *testing.T) {
+func Test_day1(t *testing.T) {
 	tests := []struct {
 		name     string
-		part     string
 		path     string
 		want     int
 		testFunc func(string) int
 	}{
-		{
-			name:     "Day 1: Part 1 example",
-			part:     "part1",
-			path:     "example1.txt",
-			want:     11,
-			testFunc: day1Part1,
-		},
-		{
-			name:     "Day 1: Part 1 input",
-			part:     "part1",
-			path:     "input.txt",
-			want:     1941353,
-			testFunc: day1Part1,
-		},
-		{
-			name:     "Day 1: Part 2 example",
-			part:     "part2",
-			path:     "example1.txt",
-			want:     31,
-			testFunc: day1Part2,
-		},
-		{
-			name:     "Day 1: Part 2 input",
-			part:     "part2",
-			path:     "input.txt",
-			want:     22539317,
-			testFunc: day1Part2,
-		},
+		{"Day 1: Part 1 - Example", "example.txt", 11, day1Part1},
+		{"Day 1: Part 1 - Input", "input.txt", 1941353, day1Part1},
+		{"Day 1: Part 2 - Example", "example.txt", 31, day1Part2},
+		{"Day 1: Part 2 - Input", "input.txt", 22539317, day1Part2},
 	}
 
 	for _, tt := range tests {
