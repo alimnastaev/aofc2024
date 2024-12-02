@@ -36,8 +36,8 @@ func Test_day2(t *testing.T) {
 	}{
 		{"Day 2: Part 1 - Example", "example.txt", 2, day2Part1},
 		{"Day 2: Part 1 - Input", "input.txt", 663, day2Part1},
-		// {"Day 2: Part 2 - Example", "example.txt", 00, day2Part2},
-		// {"Day 2: Part 2 - Input", "input.txt", 00, day2Part2},
+		{"Day 2: Part 2 - Example", "example.txt", 4, day2Part2},
+		{"Day 2: Part 2 - Input", "input.txt", 692, day2Part2},
 	}
 
 	for _, tt := range tests {
@@ -57,6 +57,34 @@ func day2Part1(path string) int {
 	for _, line := range file {
 		if isSafe(strings.Fields(line)) {
 			safe++
+		}
+	}
+
+	return safe
+}
+
+func day2Part2(path string) int {
+	file, err := utils.ReadFile(path)
+	if err != nil {
+		panic(fmt.Sprintf("Error reading file: %v", err))
+	}
+
+	var safe int
+	for _, line := range file {
+		levels := strings.Fields(line)
+		if isSafe(levels) {
+			safe++
+			continue
+		}
+
+		for i := range levels {
+			clone := make([]string, len(levels))
+			copy(clone, levels)
+
+			if isSafe(append(clone[:i], clone[i+1:]...)) {
+				safe++
+				break
+			}
 		}
 	}
 
