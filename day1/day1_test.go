@@ -3,9 +3,7 @@ package day1_test
 // https://adventofcode.com/2024/day/1
 
 import (
-	"fmt"
 	"slices"
-	"strconv"
 	"strings"
 	"testing"
 
@@ -34,10 +32,7 @@ func Test_day1(t *testing.T) {
 }
 
 func day1Part1(path string) int {
-	file, err := utils.ReadFile(path)
-	if err != nil {
-		panic(fmt.Sprintf("Error reading file: %v", err))
-	}
+	file := utils.ReadFile(path)
 
 	leftList := []int{}
 	rightList := []int{}
@@ -45,11 +40,8 @@ func day1Part1(path string) int {
 	for _, line := range file {
 		parts := strings.Fields(line)
 
-		n1, err1 := strconv.Atoi(parts[0])
-		n2, err2 := strconv.Atoi(parts[1])
-		if err1 != nil || err2 != nil {
-			panic(fmt.Sprintf("Error converting to integers: %v, %v", err1, err2))
-		}
+		n1 := utils.ParseInt(parts[0])
+		n2 := utils.ParseInt(parts[1])
 
 		leftList = append(leftList, n1)
 		rightList = append(rightList, n2)
@@ -67,10 +59,7 @@ func day1Part1(path string) int {
 }
 
 func day1Part2(path string) int {
-	file, err := utils.ReadFile(path)
-	if err != nil {
-		panic(fmt.Sprintf("Error reading file: %v", err))
-	}
+	file := utils.ReadFile(path)
 
 	leftList := []int{}
 	numToCountsMap := map[int]int{}
@@ -78,11 +67,8 @@ func day1Part2(path string) int {
 	for _, line := range file {
 		parts := strings.Fields(line)
 
-		num1, err1 := strconv.Atoi(parts[0])
-		num2, err2 := strconv.Atoi(parts[1])
-		if err1 != nil || err2 != nil {
-			panic(fmt.Sprintf("Error converting to integers: %v, %v", err1, err2))
-		}
+		num1 := utils.ParseInt(parts[0])
+		num2 := utils.ParseInt(parts[1])
 
 		leftList = append(leftList, num1)
 

@@ -3,8 +3,6 @@ package day2_test
 // https://adventofcode.com/2024/day/2
 
 import (
-	"fmt"
-	"strconv"
 	"strings"
 	"sync"
 	"testing"
@@ -48,10 +46,7 @@ func Test_day2(t *testing.T) {
 }
 
 func day2Part1(path string) int {
-	file, err := utils.ReadFile(path)
-	if err != nil {
-		panic(fmt.Sprintf("Error reading file: %v", err))
-	}
+	file := utils.ReadFile(path)
 
 	var safe int
 	for _, line := range file {
@@ -64,10 +59,7 @@ func day2Part1(path string) int {
 }
 
 func day2Part2(path string) int {
-	file, err := utils.ReadFile(path)
-	if err != nil {
-		panic(fmt.Sprintf("Error reading file: %v", err))
-	}
+	file := utils.ReadFile(path)
 
 	var safe int
 	for _, line := range file {
@@ -94,11 +86,8 @@ func day2Part2(path string) int {
 func isSafe(levels []string) bool {
 	var increasing, decreasing bool
 	for i := 0; i < len(levels)-1; i++ {
-		n1, err1 := strconv.Atoi(levels[i])
-		n2, err2 := strconv.Atoi(levels[i+1])
-		if err1 != nil || err2 != nil {
-			panic(fmt.Sprintf("Error converting to integers: %v, %v", err1, err2))
-		}
+		n1 := utils.ParseInt(levels[i])
+		n2 := utils.ParseInt(levels[i+1])
 
 		diff := utils.Abs(n1 - n2)
 		if diff < 1 || diff > 3 {
@@ -124,10 +113,7 @@ func isSafe(levels []string) bool {
 }
 
 func day2Part1Parallel(path string) int {
-	file, err := utils.ReadFile(path)
-	if err != nil {
-		panic(fmt.Sprintf("Error reading file: %v", err))
-	}
+	file := utils.ReadFile(path)
 
 	var wg sync.WaitGroup
 	rowsCh := make(chan bool, len(file))

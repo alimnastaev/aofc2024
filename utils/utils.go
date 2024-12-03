@@ -2,7 +2,9 @@ package utils
 
 import (
 	"bufio"
+	"fmt"
 	"os"
+	"strconv"
 
 	"golang.org/x/exp/constraints"
 )
@@ -19,10 +21,19 @@ func Abs[T Number](n T) T {
 	return n
 }
 
-func ReadFile(path string) ([]string, error) {
+func ParseInt(s string) int {
+	n, err := strconv.Atoi(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return n
+}
+
+func ReadFile(path string) []string {
 	file, err := os.Open(path)
 	if err != nil {
-		return nil, err
+		panic(fmt.Sprintf("Error reading file: %v", err))
 	}
 	defer file.Close()
 
@@ -33,5 +44,5 @@ func ReadFile(path string) ([]string, error) {
 		lines = append(lines, scanner.Text())
 	}
 
-	return lines, scanner.Err()
+	return lines
 }
