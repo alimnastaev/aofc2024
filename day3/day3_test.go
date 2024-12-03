@@ -4,6 +4,7 @@ package day3_test
 
 import (
 	"regexp"
+	"strings"
 	"testing"
 
 	"github.com/alimnastaev/aofc2023/utils"
@@ -20,7 +21,7 @@ func Test_day3(t *testing.T) {
 		{"Day 3: Part 1 - Example", "example1.txt", 161, day3Part1},
 		{"Day 3: Part 1 - Input", "input.txt", 178794710, day3Part1},
 		{"Day 3: Part 2 - Example", "example2.txt", 48, day3Part2},
-		{"Day 3: Part 2 - Input", "input.txt", 692, day3Part2},
+		{"Day 3: Part 2 - Input", "input.txt", 76729637, day3Part2},
 	}
 
 	for _, tt := range tests {
@@ -30,35 +31,24 @@ func Test_day3(t *testing.T) {
 	}
 }
 
-var mulRegex = regexp.MustCompile(`mul\((\d{1,3}),(\d{1,3})\)`)
+var (
+	mulRegex    = regexp.MustCompile(`mul\((\d{1,3}),(\d{1,3})\)`)
+	filterDontsRegex = regexp.MustCompile(`don't\(\).*?do\(\)`)
+)
 
 func day3Part1(path string) int {
-	var result int
-	for _, line := range utils.ReadFile(path) {
-		for _, match := range mulRegex.FindAllString(line, -1) {
-			result += extractAndMultiply(match)
-		}
-	}
-
-	return result
-}
-
-func extractAndMultiply(match string) int {
-	parts := mulRegex.FindStringSubmatch(match)
-	if len(parts) < 3 {
-		return 0
-	}
-
-	return utils.ParseInt(parts[1]) * utils.ParseInt(parts[2])
+	return extractAndMultiply(strings.Join(utils.ReadFile(path), ""))
 }
 
 func day3Part2(path string) int {
-	file := utils.ReadFile(path)
+	cleanedLine := filterDontsRegex.ReplaceAllString(strings.Join(utils.ReadFile(path), ""), "")
+	return extractAndMultiply(cleanedLine)
+}
 
+func extractAndMultiply(s string) int {
 	var result int
-	for _, line := range file {
-		_ = line
+	for _, match := range mulRegex.FindAllStringSubmatch(s, -1) {
+		result += utils.ParseInt(match[1]) * utils.ParseInt(match[2])
 	}
-
 	return result
 }
