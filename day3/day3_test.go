@@ -32,8 +32,8 @@ func Test_day3(t *testing.T) {
 }
 
 var (
-	mulRegex    = regexp.MustCompile(`mul\((\d{1,3}),(\d{1,3})\)`)
-	filterDontsRegex = regexp.MustCompile(`don't\(\).*?do\(\)`)
+	mulRegex         = regexp.MustCompile(`mul\((\d{1,3}),(\d{1,3})\)`)
+	rejectDontsRegex = regexp.MustCompile(`don't\(\).*?do\(\)`)
 )
 
 func day3Part1(path string) int {
@@ -41,7 +41,7 @@ func day3Part1(path string) int {
 }
 
 func day3Part2(path string) int {
-	cleanedLine := filterDontsRegex.ReplaceAllString(strings.Join(utils.ReadFile(path), ""), "")
+	cleanedLine := rejectDontsRegex.ReplaceAllString(strings.Join(utils.ReadFile(path), ""), "")
 	return extractAndMultiply(cleanedLine)
 }
 
