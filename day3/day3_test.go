@@ -31,23 +31,20 @@ func Test_day3(t *testing.T) {
 	}
 }
 
-var (
-	mulRegex         = regexp.MustCompile(`mul\((\d{1,3}),(\d{1,3})\)`)
-	rejectDontsRegex = regexp.MustCompile(`don't\(\).*?do\(\)`)
-)
-
 func day3Part1(path string) int {
 	return extractAndMultiply(strings.Join(utils.ReadFile(path), ""))
 }
 
 func day3Part2(path string) int {
-	cleanedLine := rejectDontsRegex.ReplaceAllString(strings.Join(utils.ReadFile(path), ""), "")
+	cleanedLine := regexp.
+		MustCompile(`don't\(\).*?do\(\)`).
+		ReplaceAllString(strings.Join(utils.ReadFile(path), ""), "")
 	return extractAndMultiply(cleanedLine)
 }
 
 func extractAndMultiply(s string) int {
 	var result int
-	for _, match := range mulRegex.FindAllStringSubmatch(s, -1) {
+	for _, match := range regexp.MustCompile(`mul\((\d{1,3}),(\d{1,3})\)`).FindAllStringSubmatch(s, -1) {
 		result += utils.ParseInt(match[1]) * utils.ParseInt(match[2])
 	}
 	return result
