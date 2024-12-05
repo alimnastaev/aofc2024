@@ -17,10 +17,10 @@ func Test_day2(t *testing.T) {
 		want     int
 		testFunc func(string) int
 	}{
-		{"Day 5: Part 1 - Example", "example.txt", 2, day5Part1},
-		{"Day 5: Part 1 - Input", "input.txt", 663, day5Part1},
-		{"Day 5: Part 2 - Example", "example.txt", 4, day5Part2},
-		{"Day 5: Part 2 - Input", "input.txt", 692, day5Part2},
+		{"Day 5: Part 1 - Example", "example.txt", 143, day5Part1},
+		{"Day 5: Part 1 - Input", "input.txt", 5639, day5Part1},
+		// {"Day 5: Part 2 - Example", "example.txt", 4, day5Part2},
+		// {"Day 5: Part 2 - Input", "input.txt", 692, day5Part2},
 	}
 
 	for _, tt := range tests {
@@ -31,68 +31,73 @@ func Test_day2(t *testing.T) {
 }
 
 func day5Part1(path string) int {
-	file := utils.ReadFile(path)
+	var rules [][]int
+	var updates [][]int
+	emptyLineFound := false
 
-	var safe int
-	for _, line := range file {
-		if isSafe(strings.Fields(line)) {
-			safe++
-		}
-	}
-
-	return safe
-}
-
-func day5Part2(path string) int {
-	file := utils.ReadFile(path)
-
-	var safe int
-	for _, line := range file {
-		levels := strings.Fields(line)
-		if isSafe(levels) {
-			safe++
+	for _, line := range utils.ReadFile(path) {
+		if line == "" {
+			emptyLineFound = true
 			continue
 		}
 
-		for i := range levels {
-			clone := make([]string, len(levels))
-			copy(clone, levels)
-
-			if isSafe(append(clone[:i], clone[i+1:]...)) {
-				safe++
-				break
-			}
+		if emptyLineFound {
+			updates = append(updates, parseOrders(line)...)
+		} else {
+			rules = append(rules, parseRules(line)...)
 		}
 	}
 
-	return safe
+	result := 0
+	for _, update := range updates {
+		if didFollowRules(update, rules) {
+			result += update[len(update)/2]
+		}
+	}
+
+	return result
 }
 
-func isSafe(levels []string) bool {
-	var increasing, decreasing bool
-	for i := 0; i < len(levels)-1; i++ {
-		n1 := utils.ParseInt(levels[i])
-		n2 := utils.ParseInt(levels[i+1])
+func didFollowRules(update []int, rules [][]int) bool {
+	updatesMap := make(map[int]int)
+	for i, n := range update {
+		updatesMap[n] = i
+	}
 
-		diff := utils.Abs(n1 - n2)
-		if diff < 1 || diff > 3 {
+	for _, r := range rules {
+		_, ok1 := updatesMap[r[0]]
+		_, ok2 := updatesMap[r[1]]
+
+		if (ok1 && ok2) && !(updatesMap[r[0]] < updatesMap[r[1]]) {
 			return false
-		}
-
-		if n1 < n2 {
-			if decreasing {
-				return false
-			}
-
-			increasing = true
-		} else if n1 > n2 {
-			if increasing {
-				return false
-			}
-
-			decreasing = true
 		}
 	}
 
 	return true
+}
+
+func parseRules(line string) [][]int {
+	var result [][]int
+	parts := strings.Split(line, "|")
+
+	result = append(result, []int{utils.ParseInt(parts[0]), utils.ParseInt(parts[1])})
+	return result
+}
+
+func parseOrders(line string) [][]int {
+	var result [][]int
+	var order []int
+	parts := strings.Split(line, ",")
+
+	for _, part := range parts {
+		order = append(order, utils.ParseInt(part))
+	}
+	return append(result, order)
+}
+
+func day5Part2(path string) int {
+	file := utils.ReadFile(path)
+	_ = file
+
+	return 0
 }
