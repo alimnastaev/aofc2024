@@ -19,7 +19,7 @@ func Test_day2(t *testing.T) {
 	}{
 		{"Day 5: Part 1 - Example", "example.txt", 143, day5Part1},
 		{"Day 5: Part 1 - Input", "input.txt", 5639, day5Part1},
-		// {"Day 5: Part 2 - Example", "example.txt", 4, day5Part2},
+		// {"Day 5: Part 2 - Example", "example.txt", 123, day5Part2},
 		// {"Day 5: Part 2 - Input", "input.txt", 692, day5Part2},
 	}
 
@@ -59,40 +59,42 @@ func day5Part1(path string) int {
 }
 
 func didFollowRules(update []int, rules [][]int) bool {
-	updatesMap := make(map[int]int)
+	updatesMap := make(map[int]int, len(update))
 	for i, n := range update {
 		updatesMap[n] = i
 	}
 
 	for _, r := range rules {
-		_, ok1 := updatesMap[r[0]]
-		_, ok2 := updatesMap[r[1]]
+		index1, found1 := updatesMap[r[0]]
+		index2, found2 := updatesMap[r[1]]
 
-		if (ok1 && ok2) && !(updatesMap[r[0]] < updatesMap[r[1]]) {
+		if found1 && found2 && index1 >= index2 {
 			return false
 		}
 	}
 
 	return true
 }
-
 func parseRules(line string) [][]int {
-	var result [][]int
 	parts := strings.Split(line, "|")
 
-	result = append(result, []int{utils.ParseInt(parts[0]), utils.ParseInt(parts[1])})
-	return result
+	rule := []int{
+		utils.ParseInt(parts[0]),
+		utils.ParseInt(parts[1]),
+	}
+
+	return [][]int{rule}
 }
 
 func parseOrders(line string) [][]int {
-	var result [][]int
-	var order []int
 	parts := strings.Split(line, ",")
+	order := make([]int, len(parts))
 
-	for _, part := range parts {
-		order = append(order, utils.ParseInt(part))
+	for i, part := range parts {
+		order[i] = utils.ParseInt(part)
 	}
-	return append(result, order)
+
+	return [][]int{order}
 }
 
 func day5Part2(path string) int {
