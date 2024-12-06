@@ -48,7 +48,7 @@ func didFollowRules(update []int, rules [][]int) bool {
 		idx1, ok1 := numToIndexMap[r[0]]
 		idx2, ok2 := numToIndexMap[r[1]]
 
-		if ok1 && ok2 && idx1 >= idx2 {
+		if (ok1 && ok2) && (idx1 >= idx2) {
 			return false
 		}
 	}
